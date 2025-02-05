@@ -9,7 +9,10 @@ libs\AceLibrary\AceLibrary.lua
 libs\AceAddon-2.0\AceAddon-2.0.lua
 libs\AceDB-2.0\AceDB-2.0.lua
 libs\AceEvent-2.0\AceEvent-2.0.lua
-libs\Gratuity-2.0\Gratuity-2.0.lua
-libs\SpecialEvents-Aura-2.0\SpecialEvents-Aura-2.0.lua
 
-ModernFocusFrame.lua
+Core.lua
+MainFrame.lua
+CastBar.lua
+Events.lua
+Utils.lua
+SlashCommands.lua
