@@ -2,18 +2,40 @@
 
 local ModernFocusFrame = ModernFocusFrame
 
-function ModernFocusFrame:HandleUnitUpdate(unit)
+function ModernFocusFrame:UNIT_HEALTH(unit)
     local _, unitGUID = UnitExists(unit)
     if unit and unitGUID and self.focusGUID == unitGUID then
         self:UpdateModernFocusFrame()
     end
 end
 
-ModernFocusFrame.UNIT_HEALTH = function(self, unit) self:HandleUnitUpdate(unit) end
-ModernFocusFrame.UNIT_MANA = function(self, unit) self:HandleUnitUpdate(unit) end
-ModernFocusFrame.UNIT_RAGE = function(self, unit) self:HandleUnitUpdate(unit) end
-ModernFocusFrame.UNIT_ENERGY = function(self, unit) self:HandleUnitUpdate(unit) end
-ModernFocusFrame.UNIT_LEVEL = function(self, unit) self:HandleUnitUpdate(unit) end
+function ModernFocusFrame:UNIT_MANA(unit)
+    local _, unitGUID = UnitExists(unit)
+    if unit and unitGUID and self.focusGUID == unitGUID then
+        self:UpdateModernFocusFrame()
+    end
+end
+
+function ModernFocusFrame:UNIT_RAGE(unit)
+    local _, unitGUID = UnitExists(unit)
+    if unit and unitGUID and self.focusGUID == unitGUID then
+        self:UpdateModernFocusFrame()
+    end
+end
+
+function ModernFocusFrame:UNIT_ENERGY(unit)
+    local _, unitGUID = UnitExists(unit)
+    if unit and unitGUID and self.focusGUID == unitGUID then
+        self:UpdateModernFocusFrame()
+    end
+end
+
+function ModernFocusFrame:UNIT_LEVEL(unit)
+    local _, unitGUID = UnitExists(unit)
+    if unit and unitGUID and self.focusGUID == unitGUID then
+        self:UpdateModernFocusFrame()
+    end
+end
 
 function ModernFocusFrame:UNIT_CASTEVENT(casterGUID, targetGUID, eventType, spellID, castDuration)
     if casterGUID == self.focusGUID then

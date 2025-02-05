@@ -50,14 +50,62 @@ function ModernFocusFrame:UpdateModernFocusFrame()
             self.levelText:SetText("??")
         end
 
-        self.frame:Show()
         self.portraitFrame:Show()
         self.levelFrame:Show()
         self.healthBar:Show()
         self.manaBar:Show()
+		self.frame:Show()
     end
 end
 
+----------------
+-- Frame Size --
+----------------
+function ModernFocusFrame:LoadScale()
+    if not ModernFocusFrameDB then
+        ModernFocusFrameDB = {}
+    end
+    if not ModernFocusFrameDB.scale then
+        ModernFocusFrameDB.scale = 1
+    end
+    self.scale = ModernFocusFrameDB.scale
+end
+
+function ModernFocusFrame:SaveScale(newScale)
+    ModernFocusFrameDB.scale = newScale
+    self.scale = newScale
+
+    if self.frame then
+        self.frame:Hide()
+        self.frame = nil
+    end
+
+	self:LoadScale()
+    self:CreateMainFrame()
+    self:CreateHealthBar()
+    self:CreateManaBar()
+    self:CreateTextElements()
+    self:CreatePortrait()
+    self:CreateLevelCircle()
+    self:CreateCastBar()
+    self:LoadPosition()
+    self:EnableDragging()
+
+    self.focusGUID = nil
+
+    self:RegisterEvent("UNIT_HEALTH")
+    self:RegisterEvent("UNIT_MANA")
+    self:RegisterEvent("UNIT_RAGE")
+    self:RegisterEvent("UNIT_ENERGY")
+    self:RegisterEvent("UNIT_LEVEL")
+    self:RegisterEvent("UNIT_CASTEVENT")
+
+    self.frame:SetScript("OnUpdate", function(_, elapsed) self:OnUpdate(elapsed) end)
+end
+
+---------------------------
+-- Position and Dragging --
+---------------------------
 function ModernFocusFrame:LoadPosition()
     local pos = self.db.profile.position
     if type(pos) ~= "table" or not pos[1] or not pos[2] or not pos[3] or not pos[4] then

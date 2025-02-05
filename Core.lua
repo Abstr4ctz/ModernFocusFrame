@@ -1,7 +1,6 @@
 -- Core.lua
 
 ModernFocusFrame = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0")
-ModernFocusFrame.scale = 1
 
 function ModernFocusFrame:OnInitialize()
     self:RegisterDB("ModernFocusFrameDB")
@@ -9,6 +8,7 @@ function ModernFocusFrame:OnInitialize()
         position = { "CENTER", "UIParent", "CENTER", 0, 0 }
     })
 
+	self:LoadScale()
     self:CreateMainFrame()
     self:CreateHealthBar()
     self:CreateManaBar()
@@ -21,16 +21,11 @@ function ModernFocusFrame:OnInitialize()
 
     self.focusGUID = nil
 
-    function HandleUnitUpdateWrapper(event, unit)
-		ModernFocusFrame:HandleUnitUpdate(unit)
-    end
-
-    self:RegisterEvent("UNIT_HEALTH", HandleUnitUpdateWrapper)
-    self:RegisterEvent("UNIT_MANA", HandleUnitUpdateWrapper)
-    self:RegisterEvent("UNIT_RAGE", HandleUnitUpdateWrapper)
-    self:RegisterEvent("UNIT_ENERGY", HandleUnitUpdateWrapper)
-    self:RegisterEvent("UNIT_LEVEL", HandleUnitUpdateWrapper)
-
+    self:RegisterEvent("UNIT_HEALTH")
+    self:RegisterEvent("UNIT_MANA")
+    self:RegisterEvent("UNIT_RAGE")
+    self:RegisterEvent("UNIT_ENERGY")
+    self:RegisterEvent("UNIT_LEVEL")
     self:RegisterEvent("UNIT_CASTEVENT")
 
     self.frame:SetScript("OnUpdate", function(_, elapsed) self:OnUpdate(elapsed) end)
