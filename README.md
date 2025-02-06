@@ -25,7 +25,7 @@ It tracks your focus target’s:
 
 ---
 ## ⚙️ Commands
-📌 **Commands list:** `/mff` 
+📌 **Commands list:** `/mff`<br>
 📌 **Set focus target:** `/mff focus`  
 📌 **Clear focus:** `/mff focus clear`  
 📌 **Set focus to mouseover:** `/mff mouse`  
