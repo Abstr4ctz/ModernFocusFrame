@@ -2,45 +2,80 @@
 
 local ModernFocusFrame = ModernFocusFrame
 
-SLASH_FOCUS1 = "/mfffocus"
-SlashCmdList["FOCUS"] = function(msg)
-    local exists, targetGUID = UnitExists("target")
-    if msg == "clear" or not exists then
-        ModernFocusFrame.focusGUID = nil
-        ModernFocusFrame.frame:Hide()
-    elseif exists and targetGUID then
-        ModernFocusFrame.focusGUID = targetGUID
-        ModernFocusFrame.frame:Show()
-        ModernFocusFrame:UpdateModernFocusFrame()
+-- Base /mff command prints help
+SLASH_MFF1 = "/mff"
+SlashCmdList["MFF"] = function(msg)
+    if not msg or msg == "" then
+        DEFAULT_CHAT_FRAME:AddMessage("ModernFocusFrame Commands:")
+        DEFAULT_CHAT_FRAME:AddMessage("/mff focus - Set current target as focus")
+        DEFAULT_CHAT_FRAME:AddMessage("/mff mouse - Set mouseover target as focus")
+        DEFAULT_CHAT_FRAME:AddMessage("/mff scale <value> - Set frame scale (e.g., /mff scale 1.2)")
+        DEFAULT_CHAT_FRAME:AddMessage("/mff lock - Toggle frame dragging lock/unlock")
+        DEFAULT_CHAT_FRAME:AddMessage("/mff cast <spell> - Cast spell on focus without changing target")
+        return
+    end
+
+    -- Extract first word (command) and remainder (argument)
+    local spacePos = strfind(msg, " ")
+    local command, arg
+
+    if spacePos then
+        command = strsub(msg, 1, spacePos - 1)
+        arg = strsub(msg, spacePos + 1)
     else
-        DEFAULT_CHAT_FRAME:AddMessage("No valid target to focus.")
+        command = msg
+        arg = ""
+    end
+
+    if command == "focus" then
+        local exists, targetGUID = UnitExists("target")
+        if arg == "clear" or not exists then
+            ModernFocusFrame.focusGUID = nil
+            ModernFocusFrame.frame:Hide()
+        elseif exists and targetGUID then
+            ModernFocusFrame.focusGUID = targetGUID
+            ModernFocusFrame.frame:Show()
+            ModernFocusFrame:UpdateModernFocusFrame()
+        else
+            DEFAULT_CHAT_FRAME:AddMessage("No valid target to focus.")
+        end
+
+    elseif command == "mouse" then
+        local exists, targetGUID = UnitExists("mouseover")
+        if arg == "clear" or not exists then
+            ModernFocusFrame.focusGUID = nil
+            ModernFocusFrame.frame:Hide()
+        elseif exists and targetGUID then
+            ModernFocusFrame.focusGUID = targetGUID
+            ModernFocusFrame.frame:Show()
+            ModernFocusFrame:UpdateModernFocusFrame()
+        else
+            DEFAULT_CHAT_FRAME:AddMessage("No valid mouseover target to focus.")
+        end
+
+    elseif command == "scale" then
+        local newScale = tonumber(arg)
+        if newScale and newScale > 0 then
+            ModernFocusFrame:SaveScale(newScale)
+            DEFAULT_CHAT_FRAME:AddMessage("ModernFocusFrame: Scale set to " .. newScale)
+        else
+            DEFAULT_CHAT_FRAME:AddMessage("Usage: /mff scale <number> (e.g., /mff scale 1.2)")
+        end
+
+    elseif command == "lock" then
+        ModernFocusFrame.db.profile.isDraggingEnabled = not ModernFocusFrame.db.profile.isDraggingEnabled
+        if ModernFocusFrame.db.profile.isDraggingEnabled then
+            ModernFocusFrame:EnableDragging()
+            DEFAULT_CHAT_FRAME:AddMessage("ModernFocusFrame: Dragging unlocked.")
+        else
+            ModernFocusFrame:DisableDragging()
+            DEFAULT_CHAT_FRAME:AddMessage("ModernFocusFrame: Dragging locked.")
+        end
+
+    elseif command == "cast" then
+        ModernFocusFrame:CastOnFocus(arg)
+
+    else
+        DEFAULT_CHAT_FRAME:AddMessage("Unknown command. Type /mff for help.")
     end
 end
-
-SLASH_FOCUSMOUSE1 = "/mffmouse"
-SlashCmdList["FOCUSMOUSE"] = function(msg)
-    local exists, targetGUID = UnitExists("mouseover")
-    if msg == "clear" or not exists then
-        ModernFocusFrame.focusGUID = nil
-        ModernFocusFrame.frame:Hide()
-    elseif exists and targetGUID then
-        ModernFocusFrame.focusGUID = targetGUID
-        ModernFocusFrame.frame:Show()
-        ModernFocusFrame:UpdateModernFocusFrame()
-    else
-        DEFAULT_CHAT_FRAME:AddMessage("No valid mouseover target to focus.")
-    end
-end
-
-SLASH_SCALE1 = "/mffscale"
-SlashCmdList["SCALE"] = function(msg)
-    local newScale = tonumber(msg)
-    
-    if newScale and newScale > 0 then
-        ModernFocusFrame:SaveScale(newScale)
-        DEFAULT_CHAT_FRAME:AddMessage("ModernFocusFrame: Scale set to " .. newScale)
-    else
-        DEFAULT_CHAT_FRAME:AddMessage("Usage: /mfscale <number> (e.g., /mfscale 1.2)")
-    end
-end
-

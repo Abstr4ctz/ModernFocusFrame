@@ -1,5 +1,8 @@
 -- Utils.lua
 
+-------------------
+-- Frame Updates --
+-------------------
 local ModernFocusFrame = ModernFocusFrame
 
 function ModernFocusFrame:UpdateModernFocusFrame()
@@ -89,10 +92,12 @@ function ModernFocusFrame:SaveScale(newScale)
     self:CreateLevelCircle()
     self:CreateCastBar()
     self:LoadPosition()
-    self:EnableDragging()
+	
+	if self.db.profile.isDraggingEnabled then
+        self:EnableDragging()
+    end
 
     self.focusGUID = nil
-
     self:RegisterEvent("UNIT_HEALTH")
     self:RegisterEvent("UNIT_MANA")
     self:RegisterEvent("UNIT_RAGE")
@@ -137,4 +142,32 @@ function ModernFocusFrame:EnableDragging()
         self.frame:StopMovingOrSizing()
         self:SavePosition()
     end)
+end
+
+function ModernFocusFrame:DisableDragging()
+    self.frame:SetMovable(false)
+    self.frame:RegisterForDrag(nil)
+    self.frame:SetScript("OnDragStart", nil)
+    self.frame:SetScript("OnDragStop", nil)
+end
+
+-------------------
+-- Focus Casting --
+-------------------
+function ModernFocusFrame:CastOnFocus(spellName)
+    if not spellName or spellName == "" then
+        DEFAULT_CHAT_FRAME:AddMessage("Usage: /mff cast <spell name>")
+        return
+    end
+
+    if not self.focusGUID then
+        DEFAULT_CHAT_FRAME:AddMessage("No focus target set.")
+        return
+    end
+
+    CastSpellByName(spellName)
+
+    if SpellIsTargeting() then
+        SpellTargetUnit(self.focusGUID)
+    end
 end

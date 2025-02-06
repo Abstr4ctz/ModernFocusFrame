@@ -3,11 +3,35 @@
 local ModernFocusFrame = ModernFocusFrame
 
 function ModernFocusFrame:CreateMainFrame()
-    self.frame = CreateFrame("Frame", "ModernFocusFrame", UIParent)
+    self.frame = CreateFrame("Button", "ModernFocusFrame", UIParent)
     self.frame:SetWidth(256 * self.scale)
     self.frame:SetHeight(128 * self.scale)
     self.frame:SetPoint("CENTER", UIParent, "CENTER")
     self.frame:SetBackdrop({ bgFile = "Interface\\AddOns\\ModernFocusFrame\\textures\\UI-TargetingFrame-Light.blp" })
+	self.frame:EnableMouse(true)
+
+	local leftInset = 25 * self.scale
+	local rightInset = 40 * self.scale
+	local topInset = 10 * self.scale
+	local bottomInset = 50 * self.scale
+	self.frame:SetHitRectInsets(leftInset, rightInset, topInset, bottomInset)
+
+	self.frame:SetScript("OnClick", function()
+		if UnitExists(self.focusGUID) then
+			TargetUnit(self.focusGUID)
+		end
+	end)
+
+    self.frame:SetScript("OnEnter", function()
+        if self.focusGUID then
+            SetMouseoverUnit(self.focusGUID)
+        end
+    end)
+
+    self.frame:SetScript("OnLeave", function()
+        SetMouseoverUnit()
+    end)
+	
     self.frame:Hide()
 end
 

@@ -5,7 +5,8 @@ ModernFocusFrame = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0")
 function ModernFocusFrame:OnInitialize()
     self:RegisterDB("ModernFocusFrameDB")
     self:RegisterDefaults("profile", {
-        position = { "CENTER", "UIParent", "CENTER", 0, 0 }
+        position = { "CENTER", "UIParent", "CENTER", 0, 0 },
+		isDraggingEnabled = false
     })
 
 	self:LoadScale()
@@ -17,10 +18,12 @@ function ModernFocusFrame:OnInitialize()
     self:CreateLevelCircle()
     self:CreateCastBar()
     self:LoadPosition()
-    self:EnableDragging()
+	
+	if self.db.profile.isDraggingEnabled then
+        self:EnableDragging()
+    end
 
     self.focusGUID = nil
-
     self:RegisterEvent("UNIT_HEALTH")
     self:RegisterEvent("UNIT_MANA")
     self:RegisterEvent("UNIT_RAGE")
