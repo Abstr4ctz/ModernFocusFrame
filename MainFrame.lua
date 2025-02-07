@@ -2,6 +2,9 @@
 
 local ModernFocusFrame = ModernFocusFrame
 
+----------------
+-- Main Frame --
+----------------
 function ModernFocusFrame:CreateMainFrame()
     self.frame = CreateFrame("Button", "ModernFocusFrame", UIParent)
     self.frame:SetWidth(256 * self.scale)
@@ -105,7 +108,81 @@ function ModernFocusFrame:CreateTextElements()
     self.manaText:SetFont(font, fontSize * 0.95, flags)
 
     self.nameText = self.frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-    self.nameText:SetPoint("BOTTOM", self.healthBar, "TOP", 0, -4)
+    self.nameText:SetPoint("BOTTOM", self.healthBar, "TOP", 0, -3.5)
     self.nameText:SetFont(font, fontSize, flags)
     self.nameText:SetTextColor(1, 1, 1)
+end
+
+---------------------
+-- Target of Focus --
+---------------------
+function ModernFocusFrame:CreateTargetOfFocusFrame()
+    self.TargetOfFocusFrame = CreateFrame("Button", "TargetOfFocusFrame", UIParent)
+    self.TargetOfFocusFrame:SetWidth(128 * self.scale)
+    self.TargetOfFocusFrame:SetHeight(64 * self.scale)
+    self.TargetOfFocusFrame:SetPoint("TOPRIGHT", self.manaBar, "BOTTOMRIGHT", self.manaBar:GetWidth() * 0.915, -3 * self.scale)
+    self.TargetOfFocusFrame:SetBackdrop({ bgFile = "Interface\\AddOns\\ModernFocusFrame\\textures\\UI-SmallTargetingFramex-NoMana-Light.blp" })
+	self.TargetOfFocusFrame:SetFrameLevel(self.frame:GetFrameLevel() + 1)
+    self.TargetOfFocusFrame:EnableMouse(true)
+	
+	local leftInset = 1 * self.scale
+	local rightInset = 32 * self.scale
+	local topInset = 0.1 * self.scale
+	local bottomInset = 25 * self.scale
+	self.TargetOfFocusFrame:SetHitRectInsets(leftInset, rightInset, topInset, bottomInset)
+	
+	self.TargetOfFocusFrame:SetScript("OnClick", function()
+		if UnitExists(self.tofocusGUID) then
+			TargetUnit(self.tofocusGUID)
+		end
+	end)
+
+    self.TargetOfFocusFrame:SetScript("OnEnter", function()
+        if self.tofocusGUID then
+            SetMouseoverUnit(self.tofocusGUID)
+        end
+    end)
+
+    self.TargetOfFocusFrame:SetScript("OnLeave", function()
+        SetMouseoverUnit()
+    end)
+	
+	self.TargetOfFocusFrame:Hide()
+end
+
+function ModernFocusFrame:CreateToFPortrait()
+    self.tofPortraitFrame = CreateFrame("Frame", nil, self.TargetOfFocusFrame)
+    self.tofPortraitFrame:SetAllPoints(self.TargetOfFocusFrame)
+    self.tofPortraitFrame:SetFrameLevel(self.TargetOfFocusFrame:GetFrameLevel() - 1)
+
+    self.tofPortrait = self.tofPortraitFrame:CreateTexture(nil, "BACKGROUND")
+    local tofPortraitSize = self.TargetOfFocusFrame:GetHeight() * 0.515
+    self.tofPortrait:SetWidth(tofPortraitSize)
+    self.tofPortrait:SetHeight(tofPortraitSize)
+    self.tofPortrait:SetPoint("TOPLEFT", self.TargetOfFocusFrame, "TOPLEFT", -self.TargetOfFocusFrame:GetWidth() * -0.059, -self.TargetOfFocusFrame:GetHeight() * 0.10)
+    self.tofPortraitFrame:Hide()
+end
+
+function ModernFocusFrame:CreateToFHealthBar()
+    self.tofHealthBar = CreateFrame("StatusBar", nil, self.TargetOfFocusFrame)
+    self.tofHealthBar:SetPoint("TOPLEFT", self.TargetOfFocusFrame, "TOPLEFT", self.TargetOfFocusFrame:GetWidth() * 0.358,
+        -self.TargetOfFocusFrame:GetHeight() * 0.225)
+    self.tofHealthBar:SetPoint("TOPRIGHT", self.TargetOfFocusFrame, "TOPRIGHT", -self.TargetOfFocusFrame:GetWidth() * 0.27,
+        -self.TargetOfFocusFrame:GetHeight() * 0.05)
+    self.tofHealthBar:SetHeight(self.TargetOfFocusFrame:GetHeight() * 0.16)
+    self.tofHealthBar:SetStatusBarTexture("Interface\\AddOns\\ModernFocusFrame\\textures\\Smooth.blp")
+    self.tofHealthBar:SetStatusBarColor(0, 1, 0)
+    self.tofHealthBar:SetFrameLevel(self.TargetOfFocusFrame:GetFrameLevel() - 1)
+
+    self.tofHealthBar:Hide()
+end
+
+function ModernFocusFrame:CreateToFTextElements()
+    local fontSize = 12 * self.scale
+    local font, _, flags = "Fonts\\FRIZQT__.TTF", fontSize, "OUTLINE"
+
+    self.tofNameText = self.TargetOfFocusFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+    self.tofNameText:SetPoint("TOP", self.tofHealthBar, "BOTTOM", 0, -3)
+    self.tofNameText:SetFont(font, fontSize, flags)
+    self.tofNameText:SetTextColor(1, 1, 1)
 end

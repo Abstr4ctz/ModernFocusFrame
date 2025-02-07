@@ -31,9 +31,13 @@ SlashCmdList["MFF"] = function(msg)
         local exists, targetGUID = UnitExists("target")
         if arg == "clear" or not exists then
             ModernFocusFrame.focusGUID = nil
+			ModernFocusFrame.tofocusGUID = nil
+			ModernFocusFrame.TargetOfFocusFrame:Hide()
             ModernFocusFrame.frame:Hide()
         elseif exists and targetGUID then
             ModernFocusFrame.focusGUID = targetGUID
+			ModernFocusFrame.TargetOfFocusFrame:Hide()
+			ModernFocusFrame.tofocusGUID = nil
             ModernFocusFrame.frame:Show()
             ModernFocusFrame:UpdateModernFocusFrame()
         else
@@ -44,9 +48,13 @@ SlashCmdList["MFF"] = function(msg)
         local exists, targetGUID = UnitExists("mouseover")
         if arg == "clear" or not exists then
             ModernFocusFrame.focusGUID = nil
+			ModernFocusFrame.tofocusGUID = nil
+			ModernFocusFrame.TargetOfFocusFrame:Hide()
             ModernFocusFrame.frame:Hide()
         elseif exists and targetGUID then
             ModernFocusFrame.focusGUID = targetGUID
+			ModernFocusFrame.TargetOfFocusFrame:Hide()
+			ModernFocusFrame.tofocusGUID = nil
             ModernFocusFrame.frame:Show()
             ModernFocusFrame:UpdateModernFocusFrame()
         else

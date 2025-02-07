@@ -4,12 +4,19 @@ local ModernFocusFrame = ModernFocusFrame
 
 function ModernFocusFrame:CreateCastBar()
     self.castBar = CreateFrame("StatusBar", nil, self.frame)
-    self.castBar:SetPoint("TOPLEFT", self.manaBar, "BOTTOMLEFT", 0, -self.frame:GetHeight() * 0.02)
-    self.castBar:SetPoint("TOPRIGHT", self.manaBar, "BOTTOMRIGHT", 0, -self.frame:GetHeight() * 0.02)
-    self.castBar:SetHeight(self.frame:GetHeight() * 0.2)
+    self.castBar:SetPoint("TOPLEFT", self.manaBar, "BOTTOMLEFT", self.frame:GetWidth() * 0.059, -self.frame:GetHeight() * 0.42)
+    self.castBar:SetPoint("TOPRIGHT", self.manaBar, "BOTTOMRIGHT", self.frame:GetWidth() * 0.059, -self.frame:GetHeight() * 0.42)
+    self.castBar:SetHeight(self.frame:GetHeight() * 0.15)
+	-- self.castBar:SetWidth(self.frame:GetWidth() * 0.9)
     self.castBar:SetStatusBarTexture("Interface\\AddOns\\ModernFocusFrame\\textures\\Smooth.blp")
     self.castBar:SetStatusBarColor(1, 0.7, 0)
     self.castBar:SetMinMaxValues(0, 1)
+	
+	self.castOverlay = self.castBar:CreateTexture(nil, "BACKGROUND")
+	self.castOverlay:SetAllPoints(self.castBar)
+	self.castOverlay:SetTexture("Interface\\Buttons\\WHITE8X8")
+	self.castOverlay:SetVertexColor(0, 0, 0, 0.3)
+
 
     self.castText = self.castBar:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     self.castText:SetPoint("CENTER", self.castBar, "CENTER", 0, 0)
@@ -25,7 +32,7 @@ function ModernFocusFrame:CreateCastBar()
     local iconSize = self.castBar:GetHeight() * 1
     self.castIcon:SetWidth(iconSize)
     self.castIcon:SetHeight(iconSize)
-    self.castIcon:SetPoint("RIGHT", self.castBar, "LEFT", -2, 0)
+    self.castIcon:SetPoint("RIGHT", self.castBar, "LEFT", -5, 0)
     self.castIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
     self.castIcon:Hide()
 

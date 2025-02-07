@@ -1,8 +1,8 @@
 -- Utils.lua
 
--------------------
--- Frame Updates --
--------------------
+------------------------
+-- Main Frame Updates --
+------------------------
 local ModernFocusFrame = ModernFocusFrame
 
 function ModernFocusFrame:UpdateModernFocusFrame()
@@ -10,6 +10,7 @@ function ModernFocusFrame:UpdateModernFocusFrame()
         local unit = self.focusGUID
         if not UnitExists(unit) then
             self.frame:Hide()
+			self.TargetOfFocusFrame:Hide()
             return
         end
 
@@ -61,6 +62,32 @@ function ModernFocusFrame:UpdateModernFocusFrame()
     end
 end
 
+-----------------------------------
+-- Target of Focus Frame Updates --
+-----------------------------------
+function ModernFocusFrame:UpdateModernToFocusFrame()
+    if self.tofocusGUID then
+        local unit = self.tofocusGUID
+        if not UnitExists(unit) then
+            self.TargetOfFocusFrame:Hide()
+            return
+        end
+
+        local name = UnitName(unit)
+        self.tofNameText:SetText(name or "Unknown")
+
+        local hp, hpMax = UnitHealth(unit), UnitHealthMax(unit)
+        self.tofHealthBar:SetMinMaxValues(0, hpMax)
+        self.tofHealthBar:SetValue(hp)
+
+        SetPortraitTexture(self.tofPortrait, unit)
+
+		self.tofHealthBar:Show()
+		self.tofPortraitFrame:Show()
+        self.TargetOfFocusFrame:Show()
+    end
+end
+
 ----------------
 -- Frame Size --
 ----------------
@@ -82,6 +109,11 @@ function ModernFocusFrame:SaveScale(newScale)
         self.frame:Hide()
         self.frame = nil
     end
+	
+	if self.TargetOfFocusFrame then
+        self.TargetOfFocusFrame:Hide()
+        self.TargetOfFocusFrame = nil
+    end
 
 	self:LoadScale()
     self:CreateMainFrame()
@@ -91,6 +123,12 @@ function ModernFocusFrame:SaveScale(newScale)
     self:CreatePortrait()
     self:CreateLevelCircle()
     self:CreateCastBar()
+	
+	self:CreateTargetOfFocusFrame()
+	self:CreateToFPortrait()
+	self:CreateToFHealthBar()
+	self:CreateToFTextElements()
+
     self:LoadPosition()
 	
 	if self.db.profile.isDraggingEnabled then
@@ -98,6 +136,7 @@ function ModernFocusFrame:SaveScale(newScale)
     end
 
     self.focusGUID = nil
+	self.tofocusGUID = nil
     self:RegisterEvent("UNIT_HEALTH")
     self:RegisterEvent("UNIT_MANA")
     self:RegisterEvent("UNIT_RAGE")

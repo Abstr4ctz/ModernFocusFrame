@@ -17,6 +17,12 @@ function ModernFocusFrame:OnInitialize()
     self:CreatePortrait()
     self:CreateLevelCircle()
     self:CreateCastBar()
+	
+	self:CreateTargetOfFocusFrame()
+	self:CreateToFPortrait()
+	self:CreateToFHealthBar()
+	self:CreateToFTextElements()
+
     self:LoadPosition()
 	
 	if self.db.profile.isDraggingEnabled then
@@ -24,6 +30,7 @@ function ModernFocusFrame:OnInitialize()
     end
 
     self.focusGUID = nil
+	self.tofocusGUID = nil
     self:RegisterEvent("UNIT_HEALTH")
     self:RegisterEvent("UNIT_MANA")
     self:RegisterEvent("UNIT_RAGE")

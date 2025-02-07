@@ -4,8 +4,17 @@ local ModernFocusFrame = ModernFocusFrame
 
 function ModernFocusFrame:UNIT_HEALTH(unit)
     local _, unitGUID = UnitExists(unit)
-    if unit and unitGUID and self.focusGUID == unitGUID then
-        self:UpdateModernFocusFrame()
+    if unit and unitGUID then
+        if self.focusGUID == unitGUID then
+			if UnitIsDead(unit) then
+                self.TargetOfFocusFrame:Hide()
+				self.tofocusGUID = nil
+                return
+            end
+            self:UpdateModernFocusFrame()
+        elseif self.tofocusGUID == unitGUID then
+            self:UpdateModernToFocusFrame()
+        end
     end
 end
 
@@ -37,18 +46,34 @@ function ModernFocusFrame:UNIT_LEVEL(unit)
     end
 end
 
+--------------------------------
+-- Target of Focus + Cast Bar --
+--------------------------------
 function ModernFocusFrame:UNIT_CASTEVENT(casterGUID, targetGUID, eventType, spellID, castDuration)
     if casterGUID == self.focusGUID then
-        if eventType == "START" then
+
+		if eventType == "START" then
             self:StartCastBar(spellID, castDuration, false)
         elseif eventType == "CHANNEL" then
             self:StartCastBar(spellID, castDuration, true)
         elseif eventType == "FAIL" then
             self:StopCastBar(true)
         end
+		
+		if not targetGUID or targetGUID == "" then
+            return
+        end
+		
+		if targetGUID and targetGUID ~= self.tofocusGUID then
+            self.tofocusGUID = targetGUID
+            self:UpdateModernToFocusFrame()
+        end
     end
 end
 
+-------------------------
+-- OnUpdate (Cast Bar) --
+-------------------------
 function ModernFocusFrame:OnUpdate(elapsed)
     if self.isCasting or self.isChanneling then
         local elapsedTime = GetTime() - self.castStartTime
