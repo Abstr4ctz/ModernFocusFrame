@@ -22,11 +22,10 @@ It tracks your focus target’s:
 - ✔️ Customizable **frame scaling**  
 - ✔️ Cast spells on focus without changing your target  
 - 🔄 Planned **buff & debuff tracking** (coming soon)  
-- 🎨 **Experimental Target of Focus system** – Allows tracking of the current target of your focus!  
 
 ---
 ## ⚙️ Commands
-📌 **Commands list:** `/mff`<br>
+📌 **Commands list:** `/mff` 
 📌 **Set focus target:** `/mff focus`  
 📌 **Clear focus:** `/mff focus clear`  
 📌 **Set focus to mouseover:** `/mff mouse`  
@@ -47,8 +46,7 @@ You can now change the scale **without editing files!** Use:
 
 ---
 ## ✨ Preview  
-![ModernFocusFrame](https://github.com/user-attachments/assets/ae3c7ac2-71fe-4b4d-9ae7-a40ebf14d02f)
-
+![ModernFocusFrame](https://github.com/user-attachments/assets/b15181ba-0b9e-4e35-adad-6d73e0d3e977)  
 
 ---
 ## 🔮 Future Plans  
@@ -58,4 +56,4 @@ You can now change the scale **without editing files!** Use:
 
 ---
 ## 🔧 Development Status  
-🛏️ **BETA** – Actively being improved!
+🚧 **BETA** – Actively being improved!  
