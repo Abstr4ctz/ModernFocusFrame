@@ -6,7 +6,8 @@ function ModernFocusFrame:OnInitialize()
     self:RegisterDB("ModernFocusFrameDB")
     self:RegisterDefaults("profile", {
         position = { "CENTER", "UIParent", "CENTER", 0, 0 },
-		isDraggingEnabled = false
+		isDraggingEnabled = false,
+		isCastHistoryEnabled = true
     })
 
 	self:LoadScale()
@@ -17,14 +18,14 @@ function ModernFocusFrame:OnInitialize()
     self:CreatePortrait()
     self:CreateLevelCircle()
     self:CreateCastBar()
-	
+
 	self:CreateTargetOfFocusFrame()
 	self:CreateToFPortrait()
 	self:CreateToFHealthBar()
 	self:CreateToFTextElements()
 
-    self:LoadPosition()
-	
+	self:LoadPosition()
+
 	if self.db.profile.isDraggingEnabled then
         self:EnableDragging()
     end

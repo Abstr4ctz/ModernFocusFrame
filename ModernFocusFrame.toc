@@ -15,4 +15,5 @@ MainFrame.lua
 CastBar.lua
 Events.lua
 Utils.lua
+CastHistory.lua
 SlashCommands.lua

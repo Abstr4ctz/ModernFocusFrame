@@ -210,3 +210,15 @@ function ModernFocusFrame:CastOnFocus(spellName)
         SpellTargetUnit(self.focusGUID)
     end
 end
+
+--------------------------
+-- Toggle Spell History --
+--------------------------
+function ModernFocusFrame:ToggleCastHistory()
+    self.db.profile.isCastHistoryEnabled = not self.db.profile.isCastHistoryEnabled
+    if self.db.profile.isCastHistoryEnabled then
+        DEFAULT_CHAT_FRAME:AddMessage("ModernFocusFrame: Cast History enabled.")
+    else
+        DEFAULT_CHAT_FRAME:AddMessage("ModernFocusFrame: Cast History disabled.")
+    end
+end

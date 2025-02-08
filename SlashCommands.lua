@@ -2,7 +2,6 @@
 
 local ModernFocusFrame = ModernFocusFrame
 
--- Base /mff command prints help
 SLASH_MFF1 = "/mff"
 SlashCmdList["MFF"] = function(msg)
     if not msg or msg == "" then
@@ -12,10 +11,10 @@ SlashCmdList["MFF"] = function(msg)
         DEFAULT_CHAT_FRAME:AddMessage("/mff scale <value> - Set frame scale (e.g., /mff scale 1.2)")
         DEFAULT_CHAT_FRAME:AddMessage("/mff lock - Toggle frame dragging lock/unlock")
         DEFAULT_CHAT_FRAME:AddMessage("/mff cast <spell> - Cast spell on focus without changing target")
+		DEFAULT_CHAT_FRAME:AddMessage("/mff history - Toggle Cast History on/off")
         return
     end
 
-    -- Extract first word (command) and remainder (argument)
     local spacePos = strfind(msg, " ")
     local command, arg
 
@@ -79,10 +78,12 @@ SlashCmdList["MFF"] = function(msg)
             ModernFocusFrame:DisableDragging()
             DEFAULT_CHAT_FRAME:AddMessage("ModernFocusFrame: Dragging locked.")
         end
+	
+	elseif command == "history" then
+		ModernFocusFrame:ToggleCastHistory()
 
     elseif command == "cast" then
         ModernFocusFrame:CastOnFocus(arg)
-
     else
         DEFAULT_CHAT_FRAME:AddMessage("Unknown command. Type /mff for help.")
     end
