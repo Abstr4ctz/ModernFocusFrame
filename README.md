@@ -1,6 +1,6 @@
 # 🎯 ModernFocusFrame
 
-![GitHub](https://img.shields.io/badge/Version-0.8-blue)
+![GitHub](https://img.shields.io/badge/Version-1.0-blue)
 ![GitHub](https://img.shields.io/badge/License-MIT-green)
 ![GitHub](https://img.shields.io/badge/Requires-SuperWoW-red)
 ![GitHub](https://img.shields.io/badge/Game-World%20of%20Warcraft-orange)
@@ -20,7 +20,8 @@ It tracks your focus target’s:
 - ✔️ Tracks **health** and **mana/rage/energy** in real-time  
 - ✔️ Accurately detects **casts**  
 - ✔️ Customizable **frame scaling**  
-- ✔️ Cast spells on focus without changing your target  
+- ✔️ Cast spells on focus without changing your target
+- ✔️ Shows all spells casted by focus
 - 🔄 Planned **buff & debuff tracking** (coming soon)  
 - 🎨 **Experimental Target of Focus system** – Allows tracking of the current target of your focus!  
 
@@ -34,6 +35,7 @@ It tracks your focus target’s:
 📌 **Cast a spell on focus target:** `/mff cast <spell>` *(Example: `/mff cast Fireball(Rank 2)`)*  
 📌 **Change frame scale:** `/mff scale <value>` *(Example: `/mff scale 1.2`)*  
 📌 **Lock/unlock frame dragging:** `/mff lock`  
+📌 **Enable/disable cast history:** `/mff history`  
 
 ---
 ## 🎨 Customization
@@ -47,7 +49,7 @@ You can now change the scale **without editing files!** Use:
 
 ---
 ## ✨ Preview  
-![ModernFocusFrame](https://github.com/user-attachments/assets/ae3c7ac2-71fe-4b4d-9ae7-a40ebf14d02f)
+![MFF](https://github.com/user-attachments/assets/98888541-61de-4524-88b9-b0e8e20f0d32)
 
 
 ---
