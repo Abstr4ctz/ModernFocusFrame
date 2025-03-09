@@ -58,11 +58,6 @@ function ModernFocusFrame:UNIT_CASTEVENT(casterGUID, targetGUID, eventType, spel
             self:StartCastBar(spellID, castDuration, false)
         elseif eventType == "CHANNEL" then
             self:StartCastBar(spellID, castDuration, true)
-			if spellIcon and self.db.profile.isCastHistoryEnabled then
-				self:CreateSpellFrame(spellIcon)
-			end
-		elseif eventType == "CAST" and spellIcon and self.db.profile.isCastHistoryEnabled then
-			self:CreateSpellFrame(spellIcon)
         elseif eventType == "FAIL" then
             self:StopCastBar(true)
         end

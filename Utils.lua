@@ -25,6 +25,17 @@ function ModernFocusFrame:UpdateModernFocusFrame()
         self.healthBar:SetValue(hp)
         self.healthText:SetText(hp)
 
+		local classFileName = UnitClass(unit)
+		local classColor = RAID_CLASS_COLORS[string.upper(classFileName)]
+
+		if classColor then
+			self.healthBar:SetStatusBarColor(classColor.r, classColor.g, classColor.b)
+		else
+			-- Default color if class not found or is nil
+			self.healthBar:SetStatusBarColor(0, 1, 0) -- Default to green if class color is not found
+		end
+
+
         self.manaBar:SetMinMaxValues(0, powerMax)
         self.manaBar:SetValue(power)
 
@@ -80,6 +91,15 @@ function ModernFocusFrame:UpdateModernToFocusFrame()
         self.tofHealthBar:SetMinMaxValues(0, hpMax)
         self.tofHealthBar:SetValue(hp)
 
+		local classFileName = UnitClass(unit)
+		local classColor = RAID_CLASS_COLORS[string.upper(classFileName)]
+
+		if classColor then
+			self.tofHealthBar:SetStatusBarColor(classColor.r, classColor.g, classColor.b)
+		else
+			self.tofHealthBar:SetStatusBarColor(0, 1, 0)
+		end
+
         SetPortraitTexture(self.tofPortrait, unit)
 
 		self.tofHealthBar:Show()
@@ -109,7 +129,7 @@ function ModernFocusFrame:SaveScale(newScale)
         self.frame:Hide()
         self.frame = nil
     end
-	
+
 	if self.TargetOfFocusFrame then
         self.TargetOfFocusFrame:Hide()
         self.TargetOfFocusFrame = nil
@@ -123,14 +143,14 @@ function ModernFocusFrame:SaveScale(newScale)
     self:CreatePortrait()
     self:CreateLevelCircle()
     self:CreateCastBar()
-	
+
 	self:CreateTargetOfFocusFrame()
 	self:CreateToFPortrait()
 	self:CreateToFHealthBar()
 	self:CreateToFTextElements()
 
     self:LoadPosition()
-	
+
 	if self.db.profile.isDraggingEnabled then
         self:EnableDragging()
     end
@@ -145,6 +165,15 @@ function ModernFocusFrame:SaveScale(newScale)
     self:RegisterEvent("UNIT_CASTEVENT")
 
     self.frame:SetScript("OnUpdate", function(_, elapsed) self:OnUpdate(elapsed) end)
+end
+
+local originalSaveScale = ModernFocusFrame.SaveScale
+function ModernFocusFrame:SaveScale(newScale)
+    originalSaveScale(self, newScale)
+    self:InitBuffsModule()
+    if self.focusGUID then
+        self:ScanAndCacheAuras()
+    end
 end
 
 ---------------------------
@@ -193,6 +222,10 @@ end
 -------------------
 -- Focus Casting --
 -------------------
+-- Utils.lua
+-------------------
+-- Focus Casting --
+-------------------
 function ModernFocusFrame:CastOnFocus(spellName)
     if not spellName or spellName == "" then
         DEFAULT_CHAT_FRAME:AddMessage("Usage: /mff cast <spell name>")
@@ -204,21 +237,13 @@ function ModernFocusFrame:CastOnFocus(spellName)
         return
     end
 
-    CastSpellByName(spellName)
+    local _, originalTargetGUID = UnitExists("target") -- Store the original target GUID
+    TargetUnit(self.focusGUID) -- Temporarily target the focus unit
+    CastSpellByName(spellName) -- Cast the spell
 
-    if SpellIsTargeting() then
-        SpellTargetUnit(self.focusGUID)
-    end
-end
-
---------------------------
--- Toggle Spell History --
---------------------------
-function ModernFocusFrame:ToggleCastHistory()
-    self.db.profile.isCastHistoryEnabled = not self.db.profile.isCastHistoryEnabled
-    if self.db.profile.isCastHistoryEnabled then
-        DEFAULT_CHAT_FRAME:AddMessage("ModernFocusFrame: Cast History enabled.")
+    if originalTargetGUID then
+        TargetUnit(originalTargetGUID) -- Retarget the original target
     else
-        DEFAULT_CHAT_FRAME:AddMessage("ModernFocusFrame: Cast History disabled.")
+        ClearTarget() -- If no original target, clear target
     end
 end

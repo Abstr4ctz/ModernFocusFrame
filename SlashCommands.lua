@@ -11,7 +11,6 @@ SlashCmdList["MFF"] = function(msg)
         DEFAULT_CHAT_FRAME:AddMessage("/mff scale <value> - Set frame scale (e.g., /mff scale 1.2)")
         DEFAULT_CHAT_FRAME:AddMessage("/mff lock - Toggle frame dragging lock/unlock")
         DEFAULT_CHAT_FRAME:AddMessage("/mff cast <spell> - Cast spell on focus without changing target")
-		DEFAULT_CHAT_FRAME:AddMessage("/mff history - Toggle Cast History on/off")
         return
     end
 
@@ -78,13 +77,39 @@ SlashCmdList["MFF"] = function(msg)
             ModernFocusFrame:DisableDragging()
             DEFAULT_CHAT_FRAME:AddMessage("ModernFocusFrame: Dragging locked.")
         end
-	
-	elseif command == "history" then
-		ModernFocusFrame:ToggleCastHistory()
 
     elseif command == "cast" then
         ModernFocusFrame:CastOnFocus(arg)
     else
         DEFAULT_CHAT_FRAME:AddMessage("Unknown command. Type /mff for help.")
+    end
+end
+
+-- Clear aura display when focus is removed
+local function ClearAuraDisplay()
+    if ModernFocusFrame.buffFrames then
+        for i = 1, ModernFocusFrame.MAX_BUFFS do
+            ModernFocusFrame.buffFrames[i]:Hide()
+        end
+    end
+    
+    if ModernFocusFrame.debuffFrames then
+        for i = 1, ModernFocusFrame.MAX_DEBUFFS do
+            ModernFocusFrame.debuffFrames[i]:Hide()
+        end
+    end
+end
+
+local originalSlashFunc = SlashCmdList["MFF"]
+
+-- Replace with our modified function that handles aura updating
+SlashCmdList["MFF"] = function(msg)
+    local oldFocusGUID = ModernFocusFrame.focusGUID
+    originalSlashFunc(msg)
+    
+    if not ModernFocusFrame.focusGUID and oldFocusGUID then
+        ClearAuraDisplay()
+    elseif ModernFocusFrame.focusGUID and ModernFocusFrame.focusGUID ~= oldFocusGUID then
+        ModernFocusFrame:ScanAndCacheAuras()
     end
 end
