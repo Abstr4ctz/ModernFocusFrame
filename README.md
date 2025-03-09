@@ -10,6 +10,7 @@ It tracks your focus target’s:
 - **health**
 - **resource (mana/rage/energy)**
 - **casts in real-time**
+- **buffs & debuffs**
 
 <br>
 
@@ -22,7 +23,7 @@ It tracks your focus target’s:
 - ✔️ Customizable **frame scaling**  
 - ✔️ Cast spells on focus without changing your target
 - ✔️ Shows all spells casted by focus
-- 🔄 Planned **buff & debuff tracking** (coming soon)  
+- ✔️ Buff & debuff tracking 
 - 🎨 **Experimental Target of Focus system** – Allows tracking of the current target of your focus!  
 
 ---
@@ -35,7 +36,6 @@ It tracks your focus target’s:
 📌 **Cast a spell on focus target:** `/mff cast <spell>` *(Example: `/mff cast Fireball(Rank 2)`)*  
 📌 **Change frame scale:** `/mff scale <value>` *(Example: `/mff scale 1.2`)*  
 📌 **Lock/unlock frame dragging:** `/mff lock`  
-📌 **Enable/disable cast history:** `/mff history`  
 
 ---
 ## 🎨 Customization
@@ -49,15 +49,4 @@ You can now change the scale **without editing files!** Use:
 
 ---
 ## ✨ Preview  
-![MFF](https://github.com/user-attachments/assets/98888541-61de-4524-88b9-b0e8e20f0d32)
-
-
----
-## 🔮 Future Plans  
-✨ **Buff & debuff tracking**  
-⚙️ **More customization options**  
-🎨 **Improved UI elements**  
-
----
-## 🔧 Development Status  
-🛏️ **BETA** – Actively being improved!
+![MFF](https://github.com/user-attachments/assets/68235aff-d774-47cd-8716-92a688a35ca8)
