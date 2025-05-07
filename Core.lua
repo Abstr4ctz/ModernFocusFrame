@@ -42,7 +42,7 @@ function ModernFocusFrame:OnInitialize()
     self:RegisterEvent("UNIT_LEVEL")
     self:RegisterEvent("UNIT_CASTEVENT")
 
-    self.frame:SetScript("OnUpdate", function(_, elapsed) self:OnUpdate(elapsed) end)
+    self.frame:SetScript("OnUpdate", function() self:OnUpdate(arg1) end)
 end
 
 RAID_CLASS_COLORS = {
