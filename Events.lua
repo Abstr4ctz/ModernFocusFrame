@@ -76,22 +76,30 @@ end
 -------------------------
 -- OnUpdate (Cast Bar) --
 -------------------------
-function ModernFocusFrame:OnUpdate(elapsed)
-    if self.isCasting or self.isChanneling then
-        local elapsedTime = GetTime() - self.castStartTime
-        local remainingTime = self.castDuration - elapsedTime
+do
+    local tick = 0
+    function ModernFocusFrame:OnUpdate(elapsed)
+        tick =  tick + elapsed
+        if tick > 0.1 then
+            self:UpdateModernFocusFrame()
+            tick = 0 
+        end
+        if self.isCasting or self.isChanneling then
+            local elapsedTime = GetTime() - self.castStartTime
+            local remainingTime = self.castDuration - elapsedTime
 
-        if elapsedTime >= self.castDuration then
-            self:StopCastBar(false)
-        else
-            local progress = (elapsedTime / self.castDuration) * self.castBar:GetWidth()
-            if self.isCasting then
-                self.castBar:SetValue(elapsedTime)
-                self.castSpark:SetPoint("CENTER", self.castBar, "LEFT", progress, 0)
-            elseif self.isChanneling then
-                local reverseProgress = (remainingTime / self.castDuration) * self.castBar:GetWidth()
-                self.castBar:SetValue(remainingTime)
-                self.castSpark:SetPoint("CENTER", self.castBar, "LEFT", reverseProgress, 0)
+            if elapsedTime >= self.castDuration then
+                self:StopCastBar(false)
+            else
+                local progress = (elapsedTime / self.castDuration) * self.castBar:GetWidth()
+                if self.isCasting then
+                    self.castBar:SetValue(elapsedTime)
+                    self.castSpark:SetPoint("CENTER", self.castBar, "LEFT", progress, 0)
+                elseif self.isChanneling then
+                    local reverseProgress = (remainingTime / self.castDuration) * self.castBar:GetWidth()
+                    self.castBar:SetValue(remainingTime)
+                    self.castSpark:SetPoint("CENTER", self.castBar, "LEFT", reverseProgress, 0)
+                end
             end
         end
     end
